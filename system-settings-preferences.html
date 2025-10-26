@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Canvas: System Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pc-primary: #0A1C30; /* Deep Slate Blue */
+            --pc-accent: #0D6EFD; /* Primary Blue */
+            font-family: 'Inter', sans-serif;
+        }
+        body { background-color: #F7F9FB; }
+        .pc-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+        .settings-input {
+            border: 1px solid #D1D5DB;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.15s;
+        }
+        .settings-input:focus {
+            border-color: var(--pc-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+        }
+        .tab-active {
+            border-bottom: 3px solid var(--pc-accent);
+            color: var(--pc-accent);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <!-- Navigation Header -->
+    <header class="bg-white sticky top-0 z-10 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-black text-[var(--pc-primary)] flex items-center">
+                <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.942 3.333.337 2.707 1.743a1.724 1.724 0 00.043 2.573c1.026 1.006 1.026 2.634 0 3.64a1.724 1.724 0 00-.043 2.573c.626 1.406-.182 2.684-1.743 2.707a1.724 1.724 0 00-1.066 2.573c.942 1.543-.337 3.333-1.743 2.707a1.724 1.724 0 00-2.573.043c-1.006 1.026-2.634 1.026-3.64 0a1.724 1.724 0 00-2.573-.043c-1.406-.626-2.684.182-2.707 1.743a1.724 1.724 0 00-2.573 1.066c-.942-1.543.337-3.333 1.743-2.707a1.724 1.724 0 00.043-2.573c-1.026-1.006-1.026-2.634 0-3.64a1.724 1.724 0 00.043-2.573c-.626-1.406.182-2.684 1.743-2.707a1.724 1.724 0 001.066-2.573zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"></path></svg>
+                System Settings
+            </h1>
+            <nav class="space-x-4 flex items-center">
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Dashboard</a>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Reports</a>
+                <a href="#" class="text-sm font-semibold text-[var(--pc-accent)] hover:text-blue-700">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <h2 class="text-3xl font-bold text-[var(--pc-primary)] mb-6">Agent & System Preferences</h2>
+
+        <div class="pc-card">
+            
+            <!-- Tabs Navigation -->
+            <nav class="flex space-x-8 border-b border-gray-200 px-6 sm:px-8 pt-4">
+                <button onclick="switchTab('brand')" class="tab-active py-3 transition duration-150">Brand & Templates</button>
+                <button onclick="switchTab('agent')" class="py-3 text-gray-600 hover:text-gray-900 transition duration-150">Agent Profile</button>
+                <button onclick="switchTab('billing')" class="py-3 text-gray-600 hover:text-gray-900 transition duration-150">Billing & Security</button>
+            </nav>
+
+            <!-- Tabs Content -->
+            <div id="settings-content" class="p-6 sm:p-8">
+
+                <!-- 1. Brand & Templates Tab -->
+                <div id="content-brand" class="tab-content">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Branded Output Defaults</h3>
+                    <p class="text-gray-600 mb-6 text-sm">Review the core branding elements that make every report instantly premium.</p>
+
+                    <div class="space-y-6 max-w-2xl">
+                        <!-- Branding Colors Display -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Primary Color</label>
+                                <div class="flex items-center space-x-3">
+                                    <div id="primary-color-display" class="w-6 h-6 rounded-full border border-gray-300" style="background-color: #0D6EFD;"></div>
+                                    <span class="text-sm font-mono text-gray-800">#0D6EFD (Blue Accent)</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Secondary Color</label>
+                                <div class="flex items-center space-x-3">
+                                    <div id="secondary-color-display" class="w-6 h-6 rounded-full border border-gray-300" style="background-color: #0A1C30;"></div>
+                                    <span class="text-sm font-mono text-gray-800">#0A1C30 (Text/Background)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logo and Template Info -->
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Default Template</label>
+                                <p class="text-lg font-bold text-gray-900">Executive (High Density)</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Logo Status</label>
+                                <p class="text-lg font-bold text-green-600">Logo Uploaded & Active</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t">
+                            <button onclick="openModal('Brand Re-Setup', 'This button would relaunch the initial 3-step brand setup wizard to change your logo, colors, or default template. This ensures consistency across all future outputs.', null)" class="text-sm bg-gray-100 text-[var(--pc-primary)] px-4 py-2 rounded-lg hover:bg-gray-200 transition font-medium">
+                                Redesign Brand Setup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Agent Profile Tab -->
+                <div id="content-agent" class="tab-content hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Agent Profile & Contact Details</h3>
+                    <p class="text-gray-600 mb-6 text-sm">Information here is used for the report cover page and signing authority.</p>
+
+                    <div class="space-y-4 max-w-2xl">
+                        <div>
+                            <label for="agent-name" class="block text-sm font-medium text-gray-700 mb-1">Your Name (Signature)</label>
+                            <input type="text" id="agent-name" value="Agent Smith" class="settings-input">
+                        </div>
+                        <div>
+                            <label for="agent-title" class="block text-sm font-medium text-gray-700 mb-1">Professional Title</label>
+                            <input type="text" id="agent-title" value="Certified Asset Inspector" class="settings-input">
+                        </div>
+                        <div>
+                            <label for="agent-license" class="block text-sm font-medium text-gray-700 mb-1">License/Registration Number</label>
+                            <input type="text" id="agent-license" value="PC-40012-TX" class="settings-input">
+                            <p class="text-xs text-gray-500 mt-1">This number is automatically added to the report footer for compliance.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3. Billing & Security Tab -->
+                <div id="content-billing" class="tab-content hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Billing & Security</h3>
+                    <p class="text-gray-600 mb-6 text-sm">Manage subscription, usage, and access controls.</p>
+
+                    <div class="space-y-6 max-w-2xl">
+                        <div class="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
+                            <h4 class="font-bold text-yellow-800">Current Plan: Premium Agent</h4>
+                            <p class="text-sm text-yellow-700">Unlimited Reports | Next billing cycle: Nov 26, 2025</p>
+                        </div>
+
+                        <div class="pt-4 border-t">
+                            <h4 class="font-bold text-gray-800 mb-2">Account Security</h4>
+                            <button onclick="openModal('Password Reset', 'A secure link to reset your password has been sent to your registered email address.', null)" class="text-sm bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition font-medium">
+                                Reset Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Universal Save Button -->
+                <div class="mt-8 pt-4 border-t flex justify-end">
+                    <button onclick="saveSettings()" class="bg-[var(--pc-accent)] text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-blue-700 transition duration-150 shadow-md">
+                        Save Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Simple Custom Modal for Alerts/Confirmation -->
+    <div id="custom-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full">
+            <h4 id="modal-title" class="text-2xl font-bold text-[var(--pc-primary)] mb-4"></h4>
+            <p id="modal-message" class="text-gray-600 mb-6"></p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeModal()" class="text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition">Close</button>
+                <button id="modal-confirm" class="bg-[var(--pc-accent)] text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition hidden">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        const modal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalConfirm = document.getElementById('modal-confirm');
+
+        function openModal(title, message, onConfirm) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            if (onConfirm) {
+                modalConfirm.onclick = onConfirm;
+                modalConfirm.classList.remove('hidden');
+            } else {
+                modalConfirm.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // --- Tab Logic ---
+
+        let currentTab = 'brand';
+
+        function switchTab(newTab) {
+            currentTab = newTab;
+            
+            // Update Tab Styles
+            document.querySelectorAll('nav button').forEach(button => {
+                button.classList.remove('tab-active');
+                button.classList.add('text-gray-600');
+            });
+            const activeButton = Array.from(document.querySelectorAll('nav button')).find(btn => btn.textContent.toLowerCase().includes(newTab));
+            if(activeButton) {
+                activeButton.classList.add('tab-active');
+                activeButton.classList.remove('text-gray-600');
+            }
+            
+            // Update Content Visibility
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`content-${newTab}`).classList.remove('hidden');
+        }
+        
+        function saveSettings() {
+            openModal("Settings Saved", "All agent profile and system preferences have been saved successfully. These defaults will apply to all future reports, ensuring efficiency.", null);
+        }
+    </script>
+</body>
+</html>
