@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Canvas: Client Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pc-primary: #0A1C30; /* Deep Slate Blue */
+            --pc-accent: #0D6EFD; /* Primary Blue */
+            font-family: 'Inter', sans-serif;
+        }
+        body { background-color: #F7F9FB; }
+        .pc-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+        input[type="text"], input[type="email"], input[type="tel"], select {
+            border: 1px solid #D1D5DB;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.15s;
+        }
+        input:focus, select:focus {
+            border-color: var(--pc-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <!-- Navigation Header -->
+    <header class="bg-white sticky top-0 z-10 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-black text-[var(--pc-primary)] flex items-center">
+                <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H4a2 2 0 01-2-2V8a2 2 0 012-2h3m6 10h-2m-2 4h4m1 4h-4M5 12h14"></path></svg>
+                Client Manager
+            </h1>
+            <nav class="space-x-4 flex items-center">
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Dashboard</a>
+                <a href="#" class="text-sm font-semibold text-[var(--pc-accent)] hover:text-blue-700">Clients</a>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900" onclick="showSettings()">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <h2 class="text-3xl font-bold text-[var(--pc-primary)] mb-6">Your Client Database</h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column: Add/Edit Client Form -->
+            <div class="lg:col-span-1 pc-card p-6 h-min sticky top-24">
+                <h3 id="form-title" class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Add New Client</h3>
+                <form class="space-y-4">
+                    <div>
+                        <label for="client-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name / Company</label>
+                        <input type="text" id="client-name" placeholder="John Doe or Starlight Corp">
+                    </div>
+                    <div>
+                        <label for="client-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="client-email" placeholder="client@example.com">
+                    </div>
+                    <div>
+                        <label for="client-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="client-phone" placeholder="(555) 555-5555">
+                    </div>
+                    <div>
+                        <label for="client-address" class="block text-sm font-medium text-gray-700 mb-1">Billing Address</label>
+                        <input type="text" id="client-address" placeholder="123 Example St, City">
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="saveClient()" class="bg-[var(--pc-accent)] text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition w-full">
+                            Save Client
+                        </button>
+                        <button type="button" onclick="clearForm()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Column: Client List & Search -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Search & Filter -->
+                <div class="flex items-center space-x-4">
+                    <input type="text" id="client-search" placeholder="Search clients by name or email..." onkeyup="filterClients()" class="flex-grow">
+                    <button class="bg-gray-100 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707v4.586L10 17v-4.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Client List Table -->
+                <div class="pc-card overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Email / Phone</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reports</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="client-list" class="bg-white divide-y divide-gray-200">
+                            <!-- Client 1 -->
+                            <tr id="client-row-1" class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--pc-primary)]">Starlight Corp</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">ceo@starlight.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4 Active</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button onclick="editClient(1)" class="text-[var(--pc-accent)] hover:text-blue-700 mr-4">Edit</button>
+                                    <button onclick="deleteClient(1)" class="text-red-600 hover:text-red-900">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Client 2 -->
+                            <tr id="client-row-2" class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--pc-primary)]">City Planning Office</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">reports@cpo.gov</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 Active</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button onclick="editClient(2)" class="text-[var(--pc-accent)] hover:text-blue-700 mr-4">Edit</button>
+                                    <button onclick="deleteClient(2)" class="text-red-600 hover:text-red-900">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Client 3 -->
+                            <tr id="client-row-3" class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--pc-primary)]">Jane Smith (Private)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">jane.s@invest.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 Active</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button onclick="editClient(3)" class="text-[var(--pc-accent)] hover:text-blue-700 mr-4">Edit</button>
+                                    <button onclick="deleteClient(3)" class="text-red-600 hover:text-red-900">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-sm text-gray-500 text-center pt-4 border-t border-gray-100">Managing a clean client list simplifies the **Input** step for every new report.</p>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Simple Custom Modal for Alerts/Confirmation -->
+    <div id="custom-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full">
+            <h4 id="modal-title" class="text-2xl font-bold text-[var(--pc-primary)] mb-4"></h4>
+            <p id="modal-message" class="text-gray-600 mb-6"></p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeModal()" class="text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition">Close</button>
+                <button id="modal-confirm" class="bg-[var(--pc-accent)] text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition hidden">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        const modal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalConfirm = document.getElementById('modal-confirm');
+
+        function openModal(title, message, onConfirm = null) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            if (onConfirm) {
+                modalConfirm.onclick = onConfirm;
+                modalConfirm.classList.remove('hidden');
+            } else {
+                modalConfirm.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            clearForm();
+        }
+
+        // --- Client Management Logic ---
+
+        function saveClient() {
+            const name = document.getElementById('client-name').value;
+            if (!name) {
+                openModal("Input Error", "Please enter a Client Name or Company name.");
+                return;
+            }
+            openModal(
+                "Client Saved",
+                `The client "${name}" has been saved. This client is now available in the Report Input Screen dropdown.`,
+            );
+        }
+
+        function editClient(id) {
+            const clientNames = {
+                1: 'Starlight Corp',
+                2: 'City Planning Office',
+                3: 'Jane Smith (Private)'
+            };
+            document.getElementById('form-title').textContent = `Editing Client: ${clientNames[id]}`;
+            document.getElementById('client-name').value = clientNames[id];
+            openModal("Edit Mode", `You are now editing client ID ${id}. All fields in the form on the left are pre-filled for ${clientNames[id]}.`);
+        }
+
+        function deleteClient(id) {
+            openModal(
+                "Confirm Deletion",
+                `Are you sure you want to permanently delete Client ID ${id} and all associated data? This cannot be undone.`,
+                () => {
+                    closeModal();
+                    document.getElementById(`client-row-${id}`).remove();
+                    openModal("Success", `Client ID ${id} deleted successfully.`, null);
+                }
+            );
+        }
+
+        function clearForm() {
+            document.getElementById('form-title').textContent = "Add New Client";
+            document.getElementById('client-name').value = '';
+            document.getElementById('client-email').value = '';
+            document.getElementById('client-phone').value = '';
+            document.getElementById('client-address').value = '';
+        }
+
+        function showSettings() {
+            // Placeholder for navigating to the next screen
+            openModal(
+                "Navigate to Settings Screen",
+                "This action would navigate you to the main Settings/Preferences screen. Shall we proceed to that final screen mockup now?",
+                () => {
+                    closeModal();
+                    alert('Simulating navigation to the Settings Screen...');
+                }
+            );
+        }
+
+        function filterClients() {
+            const input = document.getElementById('client-search');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('client-list');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const nameCell = rows[i].getElementsByTagName("td")[0];
+                if (nameCell) {
+                    const textValue = nameCell.textContent || nameCell.innerText;
+                    if (textValue.toUpperCase().indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+    </script>
+</body>
+</html>
