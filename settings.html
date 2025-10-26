@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Canvas: Brand Setup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pc-primary: #0A1C30; /* Deep Slate Blue */
+            --pc-accent: #0D6EFD; /* Primary Blue */
+            font-family: 'Inter', sans-serif;
+        }
+        .pc-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+        .step-active {
+            border-left: 4px solid var(--pc-accent);
+            background-color: rgba(13, 110, 253, 0.1);
+            color: var(--pc-accent);
+            font-weight: 600;
+        }
+        .template-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white pc-shadow sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-black text-[var(--pc-primary)] flex items-center">
+                <svg class="w-6 h-6 mr-2 text-[var(--pc-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Prime Canvas
+            </h1>
+            <span class="text-sm font-medium text-gray-500 hidden sm:block">Brand & Template Setup</span>
+            <button onclick="saveSettings()" class="bg-[var(--pc-accent)] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-150">
+                Save & Exit
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 lg:flex lg:space-x-8">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-64 mb-8 lg:mb-0 bg-white p-4 rounded-xl pc-shadow h-min">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Setup Progress</h2>
+            <nav>
+                <ul>
+                    <li id="step-identity-nav" class="step-active cursor-pointer p-3 rounded-lg transition duration-150 hover:bg-gray-100 mb-1" onclick="switchStep('identity')">
+                        Brand Identity
+                    </li>
+                    <li id="step-templates-nav" class="cursor-pointer p-3 rounded-lg transition duration-150 hover:bg-gray-100 mb-1 text-gray-600" onclick="switchStep('templates')">
+                        Template Selection
+                    </li>
+                    <li id="step-settings-nav" class="cursor-pointer p-3 rounded-lg transition duration-150 hover:bg-gray-100 mb-1 text-gray-600" onclick="switchStep('settings')">
+                        Default Settings
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <section class="flex-grow bg-white p-6 sm:p-8 rounded-xl pc-shadow">
+
+            <!-- Alert Box (for save status) -->
+            <div id="alert-box" class="hidden fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-xl transition-opacity duration-300 z-20" role="alert">
+                Settings saved successfully!
+            </div>
+            
+            <!-- 1. Brand Identity Step -->
+            <div id="content-identity" class="step-content">
+                <h2 class="text-2xl font-bold text-[var(--pc-primary)] mb-6 border-b pb-2">1. Brand Identity</h2>
+                <p class="text-gray-600 mb-6">Define your logo, colors, and typography. These will automatically be applied to every document and template.</p>
+
+                <div class="space-y-8">
+                    <!-- Logo Upload -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Company Logo</label>
+                        <div class="flex items-center space-x-4">
+                            <div id="logo-preview" class="w-24 h-24 bg-gray-100 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 overflow-hidden">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <input type="file" id="logo-upload" class="hidden" accept="image/*">
+                            <button onclick="document.getElementById('logo-upload').click()" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-50 transition duration-150">
+                                Upload New Logo
+                            </button>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">PNG or SVG recommended. Max size 2MB.</p>
+                    </div>
+
+                    <!-- Color Selection -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="primary-color" class="block text-sm font-medium text-gray-700 mb-2">Primary Brand Color</label>
+                            <div class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg">
+                                <input type="color" id="primary-color-picker" value="#0D6EFD" class="w-8 h-8 rounded-full cursor-pointer">
+                                <input type="text" id="primary-color-hex" value="#0D6EFD" class="flex-grow border-0 focus:ring-0 text-sm font-mono uppercase p-0" maxlength="7">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="secondary-color" class="block text-sm font-medium text-gray-700 mb-2">Secondary Accent Color</label>
+                            <div class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg">
+                                <input type="color" id="secondary-color-picker" value="#1C2E4A" class="w-8 h-8 rounded-full cursor-pointer">
+                                <input type="text" id="secondary-color-hex" value="#1C2E4A" class="flex-grow border-0 focus:ring-0 text-sm font-mono uppercase p-0" maxlength="7">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Font Selection -->
+                    <div>
+                        <label for="brand-font" class="block text-sm font-medium text-gray-700 mb-2">Document Font Family</label>
+                        <select id="brand-font" class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-[var(--pc-accent)] focus:border-[var(--pc-accent)] sm:text-sm rounded-lg border">
+                            <option value="Inter" style="font-family: 'Inter', sans-serif;">Inter (Modern Sans)</option>
+                            <option value="Playfair Display" style="font-family: 'Playfair Display', serif;">Playfair Display (Elegant Serif)</option>
+                            <option value="Montserrat" style="font-family: 'Montserrat', sans-serif;">Montserrat (Geometric Sans)</option>
+                        </select>
+                        <p class="mt-2 text-xs text-gray-500">This font will be used for all body text and headings.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-4 border-t flex justify-end">
+                    <button onclick="switchStep('templates')" class="bg-[var(--pc-accent)] text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-blue-700 transition duration-150 shadow-md">
+                        Continue to Templates
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Template Selection Step -->
+            <div id="content-templates" class="step-content hidden">
+                <h2 class="text-2xl font-bold text-[var(--pc-primary)] mb-6 border-b pb-2">2. Template Selection</h2>
+                <p class="text-gray-600 mb-6">Choose a base layout that best suits your professional style. Your branding colors and fonts will be applied automatically.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Template Card 1: Minimalist -->
+                    <div id="template-minimalist" class="template-card border-4 border-transparent p-4 rounded-xl cursor-pointer transition duration-200 bg-white shadow-lg relative" onclick="selectTemplate('minimalist')">
+                        <div class="absolute top-3 right-3 text-green-600 font-bold text-xs bg-green-100 px-2 py-1 rounded-full hidden" id="selected-minimalist">
+                            Selected
+                        </div>
+                        <div class="h-48 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center p-4">
+                            <div class="w-full h-full border border-gray-300 p-2 text-sm text-gray-500 flex flex-col justify-between">
+                                <div class="h-2 w-1/4 bg-gray-400 mb-2"></div>
+                                <div class="space-y-1">
+                                    <div class="h-1 w-full bg-gray-200"></div>
+                                    <div class="h-1 w-11/12 bg-gray-200"></div>
+                                    <div class="h-1 w-10/12 bg-gray-200"></div>
+                                </div>
+                                <div class="text-right text-xs">Page 1</div>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-3 text-[var(--pc-primary)]">Minimalist</h3>
+                        <p class="text-sm text-gray-500">Clean, image-focused design. Ideal for real estate and visual portfolios.</p>
+                    </div>
+
+                    <!-- Template Card 2: Executive -->
+                    <div id="template-executive" class="template-card border-4 border-transparent p-4 rounded-xl cursor-pointer transition duration-200 bg-white shadow-lg relative" onclick="selectTemplate('executive')">
+                        <div class="absolute top-3 right-3 text-green-600 font-bold text-xs bg-green-100 px-2 py-1 rounded-full hidden" id="selected-executive">
+                            Selected
+                        </div>
+                        <div class="h-48 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center p-4">
+                            <div class="w-full h-full border border-[var(--pc-accent)] p-2 text-sm text-gray-500 flex flex-col justify-between relative">
+                                <div class="absolute inset-x-0 top-0 h-4 bg-[var(--pc-accent)] opacity-20"></div>
+                                <div class="h-2 w-3/4 bg-gray-600 mb-2 mt-6"></div>
+                                <div class="space-y-1">
+                                    <div class="h-1 w-full bg-gray-200"></div>
+                                    <div class="h-1 w-11/12 bg-gray-200"></div>
+                                    <div class="h-1 w-10/12 bg-gray-200"></div>
+                                </div>
+                                <div class="text-right text-xs">Page 1</div>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-3 text-[var(--pc-primary)]">Executive</h3>
+                        <p class="text-sm text-gray-500">Professional, high-density text layout. Perfect for financial or inspection reports.</p>
+                    </div>
+
+                    <!-- Template Card 3: Modern -->
+                    <div id="template-modern" class="template-card border-4 border-transparent p-4 rounded-xl cursor-pointer transition duration-200 bg-white shadow-lg relative" onclick="selectTemplate('modern')">
+                        <div class="absolute top-3 right-3 text-green-600 font-bold text-xs bg-green-100 px-2 py-1 rounded-full hidden" id="selected-modern">
+                            Selected
+                        </div>
+                        <div class="h-48 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center p-4">
+                            <div class="w-full h-full border border-gray-300 p-2 text-sm text-gray-500 flex flex-col justify-between">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="h-2 w-1/4 bg-[var(--pc-accent)]"></div>
+                                    <div class="text-xs text-[var(--pc-accent)] font-semibold">Brand</div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="h-1 w-10/12 bg-gray-200"></div>
+                                    <div class="h-1 w-full bg-gray-200"></div>
+                                    <div class="h-1 w-9/12 bg-gray-200"></div>
+                                </div>
+                                <div class="text-right text-xs">Page 1</div>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-3 text-[var(--pc-primary)]">Modern Edge</h3>
+                        <p class="text-sm text-gray-500">Bold headings and integrated color blocks. High-impact client delivery.</p>
+                    </div>
+                </div>
+
+                <p id="template-status" class="mt-6 text-sm text-gray-600 font-medium hidden">
+                    Current Default Template: <span id="selected-template-name" class="font-bold text-[var(--pc-accent)]"></span>
+                </p>
+
+                <div class="mt-8 pt-4 border-t flex justify-between">
+                    <button onclick="switchStep('identity')" class="text-gray-600 px-6 py-3 rounded-lg text-base font-semibold hover:bg-gray-100 transition duration-150">
+                        Back to Identity
+                    </button>
+                    <button onclick="switchStep('settings')" class="bg-[var(--pc-accent)] text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-blue-700 transition duration-150 shadow-md">
+                        Continue to Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Default Settings Step -->
+            <div id="content-settings" class="step-content hidden">
+                <h2 class="text-2xl font-bold text-[var(--pc-primary)] mb-6 border-b pb-2">3. Default Settings</h2>
+                <p class="text-gray-600 mb-6">Set up your preferences for new reports to ensure maximum speed and consistency for your team.</p>
+
+                <div class="space-y-6">
+                    <!-- Default Watermark -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Default Watermark/Status</label>
+                        <select class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-[var(--pc-accent)] focus:border-[var(--pc-accent)] sm:text-sm rounded-lg border">
+                            <option>No Watermark (Default)</option>
+                            <option>Draft</option>
+                            <option>Internal Use Only</option>
+                            <option>Custom Text...</option>
+                        </select>
+                    </div>
+
+                    <!-- Page Numbering -->
+                    <div class="flex items-start">
+                        <input id="page-numbering" type="checkbox" checked class="h-4 w-4 text-[var(--pc-accent)] border-gray-300 rounded focus:ring-[var(--pc-accent)]">
+                        <label for="page-numbering" class="ml-3 block text-sm font-medium text-gray-700">
+                            Include Automatic Page Numbering
+                        </label>
+                    </div>
+
+                    <!-- Global Formatting Preference -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Global Date Format</label>
+                        <select class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-[var(--pc-accent)] focus:border-[var(--pc-accent)] sm:text-sm rounded-lg border">
+                            <option>MM/DD/YYYY (US Standard)</option>
+                            <option>DD/MM/YYYY (EU Standard)</option>
+                            <option>YYYY-MM-DD (ISO Standard)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t flex justify-between">
+                    <button onclick="switchStep('templates')" class="text-gray-600 px-6 py-3 rounded-lg text-base font-semibold hover:bg-gray-100 transition duration-150">
+                        Back to Templates
+                    </button>
+                    <button onclick="saveSettings()" class="bg-green-600 text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-green-700 transition duration-150 shadow-md">
+                        Finalize & Save All Settings
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        let currentStep = 'identity';
+        let selectedTemplate = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup Color Picker Sync (Hex to Color input)
+            const primaryHex = document.getElementById('primary-color-hex');
+            const primaryPicker = document.getElementById('primary-color-picker');
+            const secondaryHex = document.getElementById('secondary-color-hex');
+            const secondaryPicker = document.getElementById('secondary-color-picker');
+
+            primaryHex.addEventListener('input', (e) => primaryPicker.value = e.target.value);
+            primaryPicker.addEventListener('input', (e) => {
+                primaryHex.value = e.target.value.toUpperCase();
+                document.documentElement.style.setProperty('--pc-accent', e.target.value);
+            });
+
+            secondaryHex.addEventListener('input', (e) => secondaryPicker.value = e.target.value);
+            secondaryPicker.addEventListener('input', (e) => {
+                secondaryHex.value = e.target.value.toUpperCase();
+                document.documentElement.style.setProperty('--pc-primary', e.target.value);
+            });
+            
+            // Initial style application
+            document.documentElement.style.setProperty('--pc-accent', primaryPicker.value);
+            document.documentElement.style.setProperty('--pc-primary', secondaryPicker.value);
+
+            // Simulate logo upload preview
+            document.getElementById('logo-upload').addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const preview = document.getElementById('logo-preview');
+                        preview.innerHTML = `<img src="${e.target.result}" alt="Logo Preview" class="w-full h-full object-contain p-2">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Set initial selected template (Minimalist)
+            selectTemplate('minimalist');
+        });
+
+        function switchStep(newStep) {
+            currentStep = newStep;
+            
+            // Update Navigation Styles
+            document.querySelectorAll('nav li').forEach(li => {
+                li.classList.remove('step-active');
+                li.classList.add('text-gray-600');
+            });
+            document.getElementById(`step-${newStep}-nav`).classList.add('step-active');
+            document.getElementById(`step-${newStep}-nav`).classList.remove('text-gray-600');
+            
+            // Update Content Visibility
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`content-${newStep}`).classList.remove('hidden');
+
+            // Scroll to top of content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectTemplate(templateName) {
+            selectedTemplate = templateName;
+            
+            // Reset all card styles
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('border-[var(--pc-accent)]', 'ring-4', 'ring-[var(--pc-accent)]', 'ring-opacity-20');
+                card.classList.add('border-transparent');
+                card.style.borderColor = 'transparent'; // Ensure explicit reset
+                document.getElementById(`selected-${card.id.split('-')[1]}`).classList.add('hidden');
+            });
+
+            // Apply active styles to the selected card
+            const selectedCard = document.getElementById(`template-${templateName}`);
+            selectedCard.classList.add('border-[var(--pc-accent)]', 'ring-4', 'ring-[var(--pc-accent)]', 'ring-opacity-20');
+            selectedCard.classList.remove('border-transparent');
+            document.getElementById(`selected-${templateName}`).classList.remove('hidden');
+
+            // Update status text
+            const nameMap = {
+                'minimalist': 'Minimalist',
+                'executive': 'Executive',
+                'modern': 'Modern Edge'
+            };
+            document.getElementById('selected-template-name').textContent = nameMap[templateName];
+            document.getElementById('template-status').classList.remove('hidden');
+        }
+
+        function saveSettings() {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.classList.remove('hidden', 'opacity-0');
+            alertBox.classList.add('opacity-100');
+            
+            // Simulate saving delay
+            setTimeout(() => {
+                alertBox.classList.remove('opacity-100');
+                alertBox.classList.add('opacity-0');
+                
+                // Hide after transition
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                }, 300); 
+            }, 1500);
+
+            console.log("Settings Saved:", {
+                logo: document.getElementById('logo-upload').files[0]?.name || 'No new logo uploaded',
+                primaryColor: document.getElementById('primary-color-hex').value,
+                secondaryColor: document.getElementById('secondary-color-hex').value,
+                font: document.getElementById('brand-font').value,
+                defaultTemplate: selectedTemplate
+            });
+        }
+    </script>
+</body>
+</html>
