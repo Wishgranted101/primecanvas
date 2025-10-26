@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Canvas: Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Using default values from the previous brand setup for a professional look */
+            --pc-primary: #0A1C30; /* Deep Slate Blue */
+            --pc-accent: #0D6EFD; /* Primary Blue */
+            font-family: 'Inter', sans-serif;
+        }
+        body { background-color: #F7F9FB; }
+        .pc-card {
+            background-color: white;
+            border-radius: 1rem; /* large rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <!-- Navigation Header -->
+    <header class="bg-white sticky top-0 z-10 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-black text-[var(--pc-primary)] flex items-center">
+                <svg class="w-6 h-6 mr-2 text-[var(--pc-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l2-2 2 2v13"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 19V6l2-2 2 2v13"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19V6l2-2 2 2v13"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 19h20"></path></svg>
+                Prime Canvas
+            </h1>
+            <nav class="space-x-4 flex items-center">
+                <a href="#" class="text-sm font-semibold text-[var(--pc-accent)] hover:text-blue-700">Dashboard</a>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Reports</a>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Clients</a>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- Welcome and CTA Section (Input) -->
+        <div class="pc-card p-8 mb-10 bg-gradient-to-r from-white to-blue-50">
+            <h2 class="text-3xl font-bold text-[var(--pc-primary)] mb-2">Welcome Back, Agent Smith</h2>
+            <p class="text-gray-600 mb-6 max-w-2xl">Your branded reports are ready to be generated. Let's create your next high-impact deliverable for a client.</p>
+
+            <button onclick="startNewReport()" class="bg-[var(--pc-accent)] text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-blue-700 transition duration-150 shadow-lg shadow-blue-500/50 flex items-center">
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                START NEW REPORT (I N P U T)
+            </button>
+            <p class="text-sm text-gray-500 mt-4">Takes less than 60 seconds with our optimized **I-O-B** flow.</p>
+        </div>
+
+        <!-- Key Performance Metrics (Benefit) -->
+        <h3 class="text-xl font-bold text-gray-700 mb-4">Your Performance & Efficiency (B E N E F I T)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+            <!-- Metric Card 1: Time Saved -->
+            <div class="pc-card metric-card p-6 border-l-4 border-green-500">
+                <div class="text-sm font-medium text-gray-500">Estimated Time Saved</div>
+                <div class="flex items-end justify-between mt-1">
+                    <span class="text-4xl font-extrabold text-green-600">42 Hours</span>
+                    <span class="text-sm text-gray-400">YTD</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Time saved on formatting is redirected to billable work.</p>
+            </div>
+
+            <!-- Metric Card 2: Report Consistency -->
+            <div class="pc-card metric-card p-6 border-l-4 border-yellow-500">
+                <div class="text-sm font-medium text-gray-500">On-Brand Deliverables</div>
+                <div class="flex items-end justify-between mt-1">
+                    <span class="text-4xl font-extrabold text-yellow-600">100%</span>
+                    <span class="text-sm text-gray-400">Last 30 Days</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Zero formatting errors; perfect brand compliance.</p>
+            </div>
+
+            <!-- Metric Card 3: Client Engagement -->
+            <div class="pc-card metric-card p-6 border-l-4 border-[var(--pc-accent)]">
+                <div class="text-sm font-medium text-gray-500">Client Engagement Score</div>
+                <div class="flex items-end justify-between mt-1">
+                    <span class="text-4xl font-extrabold text-[var(--pc-accent)]">4.8/5.0</span>
+                    <span class="text-sm text-gray-400">Avg. Feedback</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">High score justifies premium fees and client retention.</p>
+            </div>
+        </div>
+
+        <!-- Recent Reports (Output) -->
+        <h3 class="text-xl font-bold text-gray-700 mb-4">Recent Deliverables (O U T P U T)</h3>
+        <div class="pc-card p-6">
+            <ul class="divide-y divide-gray-100">
+                <li class="flex justify-between items-center py-3">
+                    <div class="flex flex-col">
+                        <span class="font-medium text-[var(--pc-primary)]">Valuation Report: 123 Main Street</span>
+                        <span class="text-sm text-gray-500">Client: Starlight Corp | Template: Minimalist</span>
+                    </div>
+                    <div class="space-x-3">
+                        <button class="text-sm text-[var(--pc-accent)] hover:underline">View PDF</button>
+                        <button class="text-sm text-red-500 hover:underline">Archive</button>
+                    </div>
+                </li>
+                <li class="flex justify-between items-center py-3">
+                    <div class="flex flex-col">
+                        <span class="font-medium text-[var(--pc-primary)]">Feasibility Study: Downtown Tower Redesign</span>
+                        <span class="text-sm text-gray-500">Client: City Planning Office | Template: Executive</span>
+                    </div>
+                    <div class="space-x-3">
+                        <button class="text-sm text-[var(--pc-accent)] hover:underline">View PDF</button>
+                        <button class="text-sm text-red-500 hover:underline">Archive</button>
+                    </div>
+                </li>
+                <li class="flex justify-between items-center py-3">
+                    <div class="flex flex-col">
+                        <span class="font-medium text-[var(--pc-primary)]">Q3 Investment Strategy Update</span>
+                        <span class="text-sm text-gray-500">Client: Private Investor A | Template: Modern Edge</span>
+                    </div>
+                    <div class="space-x-3">
+                        <button class="text-sm text-[var(--pc-accent)] hover:underline">View PDF</button>
+                        <button class="text-sm text-red-500 hover:underline">Archive</button>
+                    </div>
+                </li>
+            </ul>
+            <div class="pt-4 mt-4 border-t border-gray-100">
+                <a href="#" class="text-sm font-semibold text-gray-500 hover:text-gray-900 transition duration-150">View All 28 Reports &rarr;</a>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function startNewReport() {
+            // Placeholder function for initiating the document creation flow
+            // This would transition the user to the "Input" data entry screen
+            const welcomeText = document.querySelector('h2');
+            welcomeText.textContent = "Initiating New Report Flow...";
+            
+            const button = document.querySelector('button.bg-\\[var\\(--pc-accent\\]');
+            button.innerHTML = '<svg class="w-6 h-6 mr-3 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 12m4.103 4.885A8.001 8.001 0 0119.418 12M20 4v5h-5"></path></svg>Loading Data Modules...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                // In a real app, this would route to the 'New Report Input' screen.
+                alert('New Report Input Screen Mockup: You would now enter your raw data (text, numbers, images) to begin generating the high-fidelity output.');
+                window.location.reload(); // Reset for this demo
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
